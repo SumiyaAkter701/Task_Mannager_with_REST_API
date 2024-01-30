@@ -1,0 +1,141 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block titel %}
+<title>Task-view</title>
+{% endblock titel %}
+
+{% block body %}
+<br>
+<main>
+
+    <div class="row">
+        <div class="col-6">
+            <section class="py-2 text-center container">
+                <div class="row py-lg-2">
+                    <div class="col-lg-12 col-md-8 mx-auto">
+                        <h1 class="fw-light">{{task_view.title}}</h1>
+                        <p class="lead text-muted"><b>Assing to: {{task_view.assigned_to}}</b></p>
+                        <p class="lead text-muted">{{task_view.description}}</p>
+                        <p>
+                            <a class="btn btn-primary my-2">Priority: {{task_view.priority}} </a>
+                            {% if task_view.is_complete %}
+                            <a class="btn btn-success my-2">Status: Complete </a>
+                            {% else %}
+                            <a class="btn btn-secondary my-2">Status:  Incomplete </a>
+                            {% endif %}
+                        </p> 
+                        <div class="row">
+                            <div class="col-6">
+                                <p class="lead text-muted">Task Create Date: {{task_view.created_date}} </p>
+                            </div>
+                            <div class="col-6">
+                                <p class="lead text-muted">Task Due Date: {{task_view.due_date}} </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+
+        <div class="col-6">
+            <div class="album py-2 bg-light">
+                <div class="container">
+        
+                    {% if request.user.user_type == 'Admin' or request.user.user_type == 'Staff' %}
+                    {% if task.is_complete != True %}
+                    <section class="text-center container">
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row py-lg-2">
+                                <div class="col-lg-12 col-md-12 mx-auto">
+                                    
+                                    
+                                    <input type="file" class="form-control" style="width: 70%; margin-bottom: 10px;" accept="image" name="image">
+                                    <button type="submit" class="form-control btn btn-primary" style="width: 40%;margin-bottom: 10px;">
+                                        Add Photo</button>
+
+
+                                    {% if messages %}
+                                    {% for message in messages %}
+                                    {% if message == 'Image Must Be Set!' %}
+                                    <p><i>{{message}}</i></p>
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </form>
+                    </section>
+                    {% endif %}
+                    {% endif %}
+        
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
+        
+                        {% if image  %}
+                        {% for image in image %}
+                        <div class="col">
+                            <div class="card shadow-sm">
+        
+                                <img src="{{image.image.url}}" alt="" width="100%">
+        
+                                {% if task.is_complete != True %}
+                                {% if request.user.user_type == 'Admin' or request.user.user_type == 'Staff' %}
+                                <div class="card-body">
+                                    <p class="card-text"></p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <a href="{% url 'delete_task_image' image.id %}"
+                                                class="btn btn-sm btn-outline-danger">Delete</a>
+                                        </div>
+                                        <!-- <small class="text-muted">9 دقائق</small> -->
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% endif %} 
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <p>No photos for this task yet.</p>
+                        {% endif %} 
+        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <section class="text-center container">
+        <div class="row py-lg-2">
+            <div class="col-lg-12 col-md-8 mx-auto">
+                <p>
+                    {% if task_view.is_complete != True %}
+                    {% if request.user.user_type == 'Admin' or request.user.user_type == 'Staff' %}
+                    <a href="{% url 'edit_task' task_view.id %}" class="btn btn-primary my-2">Upadte Task</a>
+
+                    {% if request.user.user_type == 'Admin' %}
+                    <a href="{% url 'delete_task' task_view.id %}" class="btn btn-danger my-2">
+                        Delete Task
+                    </a>
+                    {% endif %}
+
+                    {% endif %}
+
+                    <a href="{% url 'task_submition' task_view.id %}" class="btn btn-success my-2">
+                        Task Complete
+                    </a>
+                    {% else %}
+                    <a class="btn btn-success my-2">
+                        Complete <i class="fa fa-check"></i>
+                    </a>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </section>
+
+</main>
+{% endblock body %}

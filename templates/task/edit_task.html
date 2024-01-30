@@ -1,0 +1,76 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block titel %}
+<title>add-task</title>
+{% endblock titel %}
+
+{% block body %}
+    <style>
+        .bg-image-vertical {
+        position: relative;
+        overflow: hidden;
+        background-repeat: no-repeat;
+        background-position: right center;
+        background-size: auto 100%;
+        }
+
+            @media (min-width: 1025px) {
+            .h-custom-2 {
+            height: 100%;
+            }
+        }
+    </style>
+
+<section class="vh-100">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6 text-black">
+  
+          
+  
+            <div style="width: 70%; margin: auto;">
+                <form method="POST">
+                {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="InputTitle" class="form-label">Task Title</label>                     
+                        <p>{{form.title}}</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="InputDescription" class="form-label">Description</label>
+                        <p>{{form.description}}</p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="InputTitle" class="form-label">Assign to</label>
+                        <b>{{form.assigned_to}}</b>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="InputDescription" class="form-label">Priority</label>
+                                <b>{{form.priority}}</b>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="InputDescription" class="form-label">Due Date</label>
+                                <b>{{form.due_date}}</b>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <button type="submit" class="btn btn-outline-secondary">Update Task</button>
+                   
+                    
+                   
+                </form>
+            </div>
+  
+        </div>
+        
+      </div>
+    </div>
+  </section>
+{% endblock body %}

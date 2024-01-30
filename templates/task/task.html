@@ -1,0 +1,55 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block titel %}
+<title>home</title>
+{% endblock titel %}
+
+{% block body %}
+<br>
+<table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Titel</th>
+        <th scope="col">
+          <a style="color: black;" href="?ordering=priority">Priority</a>
+        </th>
+        <th scope="col">Assingd to</th>
+        <th scope="col">
+          <a style="color: black;" href="?ordering=created_date">Created Date</a>
+        </th>
+        <th scope="col">
+          <a style="color: black;" href="?ordering=due_date">Due Date</a>
+        </th>
+        <th scope="col"><b>
+          <a style="color: black;" href="?filter=status">Status</a>
+        </th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+{% for task in task %}
+      <tr>
+        <th scope="row">{{task.id}}</th>
+        <td>{{task.title}}</td>
+        <td>{{task.priority}}</td>
+        <td>{{task.assigned_to}}</td>
+        <td>{{task.created_date}}</td>
+
+        <td>{{task.due_date}}</td>
+
+        <td>{% if task.is_complete %}
+          Complete
+          {% else %}
+          Incomplete
+          {% endif %}
+        </td>
+        <td><a href="{% url 'task_view' task.id %}">View</a></td>
+        
+      </tr>
+      {% endfor %}
+
+    </tbody>
+  </table>
+{% endblock body %}
