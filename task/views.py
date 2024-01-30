@@ -3,15 +3,15 @@ from .form import AddTask_Form
 from .models import *
 import os 
 from django.contrib import messages
+from django.db.models import Case, When, IntegerField
 # Create your views here.
 def task_list(request):
     if request.method == 'GET':
         search_kay = request.GET.get('search_bar')
         filter = request.GET.get('filter')
         ordering = request.GET.get('ordering')
+        priority = request.GET.get('priority')
         
-        
-
         if search_kay:
             if Task.objects.filter(title__icontains = search_kay).exists():
                 task = Task.objects.filter(title__icontains = search_kay)
@@ -29,11 +29,23 @@ def task_list(request):
             task = Task.objects.filter(is_complete=True)
             
         elif filter == 'incomplete':
-            task = Task.objects.filter(is_complete=False)    
-            
+            task = Task.objects.filter(is_complete=False)  
+
+        elif priority == 'all':
+            task = Task.objects.all()
+
+        elif priority == 'high':
+            task = Task.objects.filter(priority='High')
+
+        elif priority == 'medium':
+            task = Task.objects.filter(priority="Medium")
+
+        elif priority == 'low':
+            task = Task.objects.filter(priority='Low')
+
         else:
             task = Task.objects.all()
-    return render(request,'task/task.html',{'task':task})
+    return render(request,'task/task.html',{'task':task, 'filter':filter})
 
 def add_task(request):
     form=AddTask_Form()
