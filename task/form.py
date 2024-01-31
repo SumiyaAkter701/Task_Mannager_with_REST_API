@@ -7,7 +7,7 @@ class AddTask_Form(forms.ModelForm):
         fields=['title','description','assigned_to','due_date','priority']
         widgets={
             'title': forms.TextInput(attrs={'class': 'form-control form-control-lg', 'placeholder': 'Enter Task Title'}),
-            'description': forms.TextInput(attrs={'class': 'form-control form-control-lg','placeholder':'Enter Task Description'}),
+            'description': forms.Textarea(attrs={'class': 'form-control form-control-lg','placeholder':'Enter Task Description'}),
             'assigned_to': forms.Select(attrs={'class': 'form-control form-control-lg'}),
             'due_date': forms.DateInput(attrs={'class': 'form-control form-control-lg','type':'date'}),
             'priority': forms.Select(attrs={'class': 'form-control form-control-lg'}),
