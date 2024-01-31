@@ -66,10 +66,10 @@ def task_view(request,id):
 
     if request.method == 'POST':
         image = request.FILES.get('image')
-        print(image)
-
-        task_image = Task_Image.objects.create(image=image,task=task_view)
-        task_image.save()
+        
+        if image:
+            task_image = Task_Image.objects.create(image=image,task=task_view)
+            task_image.save()
         return redirect(request.META['HTTP_REFERER'])
     
     return render(request,'task/task_view.html',{'task_view':task_view, 'image':image})
@@ -103,5 +103,3 @@ def task_submition(request,id):
     task.save()        
     return redirect(request.META['HTTP_REFERER'])
 
-def notification(request):
-    pass
