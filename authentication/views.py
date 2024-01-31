@@ -56,7 +56,7 @@ def sign_out(request):
 
 def forget_password(request):
     if request.user.is_authenticated:
-        return redirect('deshboardPage')
+        return redirect('task_list')
     
     if request.method == 'POST':
         otp = random.randint(111111, 999999)
@@ -84,7 +84,7 @@ def forget_password(request):
 
 def reset_password(request):
     if request.user.is_authenticated:
-        return redirect('deshboardPage')
+        return redirect('task_list')
     
     if request.method == 'POST':
         email = request.POST['email']
