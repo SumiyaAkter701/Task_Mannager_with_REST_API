@@ -4,7 +4,10 @@ from .models import *
 import os 
 from django.contrib import messages
 from django.db.models import Case, When, IntegerField
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
+@login_required
 def task_list(request):
     if request.method == 'GET':
         search_kay = request.GET.get('search_bar')
@@ -47,7 +50,11 @@ def task_list(request):
             task = Task.objects.all()
     return render(request,'task/task.html',{'task':task, 'filter':filter})
 
+@login_required
 def add_task(request):
+    if request.user.user_type == 'User':
+       return redirect('task_list')  
+    
     form=AddTask_Form()
     if request.method == 'POST':
         form  = AddTask_Form(request.POST)
@@ -60,6 +67,7 @@ def add_task(request):
         
     return render(request,'task/add_task.html',{'form':form})
 
+@login_required
 def task_view(request,id):
     task_view = Task.objects.get(id=id)    
     image = Task_Image.objects.filter(task=task_view)
@@ -74,7 +82,11 @@ def task_view(request,id):
     
     return render(request,'task/task_view.html',{'task_view':task_view, 'image':image})
 
+@login_required
 def edit_task(request,id):
+    if request.user.user_type == 'User':
+       return redirect('task_list')  
+    
     task = Task.objects.get(id=id)
 
     form=AddTask_Form(instance=task)
@@ -85,18 +97,26 @@ def edit_task(request,id):
             return redirect('task_view',id=id)
     return render(request,'task/edit_task.html',{'form':form})
 
+@login_required
 def delete_task(request,id):
+    if request.user.user_type == 'User':
+       return redirect('task_list')  
+    
     task = Task.objects.get(id=id)
     task.delete()
     return redirect('task_list')
 
+@login_required
 def delete_task_image(request,id):
+    if request.user.user_type == 'User':
+       return redirect('task_list')  
+    
     task_image = Task_Image.objects.get(id=id)
     os.remove(task_image.image.path)
     task_image.delete()
     return redirect(request.META['HTTP_REFERER'])
 
-
+@login_required
 def task_submition(request,id):
     task = Task.objects.get(id=id)
     task.is_complete = True

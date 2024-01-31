@@ -49,7 +49,7 @@
                 <div class="container">
         
                     {% if request.user.user_type == 'Admin' or request.user.user_type == 'Staff' %}
-                    {% if task.is_complete != True %}
+                    {% if task_view.is_complete != True %}
                     <section class="text-center container">
                         <form method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
@@ -85,7 +85,7 @@
         
                                 <img src="{{image.image.url}}" alt="" width="100%">
         
-                                {% if task.is_complete != True %}
+                                {% if task_view.is_complete != True %}
                                 {% if request.user.user_type == 'Admin' or request.user.user_type == 'Staff' %}
                                 <div class="card-body">
                                     <p class="card-text"></p>

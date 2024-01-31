@@ -1,7 +1,7 @@
 from django.urls import path, include
 from .views import*
 urlpatterns = [
-    path('task-list/',task_list,name="task_list"),
+    path('',task_list,name="task_list"),
     path('add-task/',add_task,name="add_task"),
     path('edit-task/<int:id>/',edit_task,name="edit_task"),
     path('delete-task/<int:id>/',delete_task,name="delete_task"),
