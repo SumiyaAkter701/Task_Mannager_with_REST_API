@@ -15,7 +15,7 @@ class Task(models.Model):
     is_complete = models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True, editable=False,blank=True,null=True)
     completed_date = models.DateTimeField(auto_now_add=True,editable=False,blank=True,null=True)
-    updated_date = models.DateField(auto_now=True, editable=False)
+    updated_date = models.DateTimeField(auto_now=True)
     
     
     def __str__(self) -> str:

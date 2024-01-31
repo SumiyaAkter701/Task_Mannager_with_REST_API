@@ -82,6 +82,7 @@ def edit_task(request,id):
         form = AddTask_Form(request.POST,instance=task)
         if form.is_valid():
             form.save()
+            return redirect('task_view',id=id)
     return render(request,'task/edit_task.html',{'form':form})
 
 def delete_task(request,id):
