@@ -8,6 +8,9 @@ urlpatterns = [
     path('task-view/<int:id>/',task_view,name="task_view"),
     
     path('delete-task-image/<int:id>/',delete_task_image,name="delete_task_image"),
-    path('task-submition/<int:id>/',task_submition,name="task_submition"),
+    path('task-submition/<int:id>/',task_submition,name="task_submition"), 
+
+    path('api-view/',API_view,name="api_view"), 
+    path('api-view/<int:id>/',API_view,name="api_view"), 
 
 ]

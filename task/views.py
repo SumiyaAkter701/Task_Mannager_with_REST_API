@@ -103,3 +103,58 @@ def task_submition(request,id):
     task.save()        
     return redirect(request.META['HTTP_REFERER'])
 
+
+# REST_API
+from rest_framework.decorators import api_view
+from .serializers import Task_Serializer
+from rest_framework.response import Response
+
+@api_view(['POST','GET','PUT','PATCH','DELETE'])
+def API_view(request,id=None):
+    if id is not None:
+        task = Task.objects.get(id=id)
+    else:
+        task = Task.objects.all()
+
+    if request.method == 'GET':
+        if id is not None:
+            task_serialize=Task_Serializer(task)
+        else:
+            task_serialize=Task_Serializer(task,many=True)
+        return Response(task_serialize.data)
+    
+    if request.method == 'POST':
+        data = request.data
+
+        task_serialize = Task_Serializer(data=data)
+        if task_serialize.is_valid():
+            task_serialize.save()
+            msg = 'Task added successfully!'
+            return Response(msg)
+        else:
+            return Response(task_serialize.errors)
+        
+    if request.method == 'PUT':
+        data = request.data
+        task_serialize = Task_Serializer(instance=task,data=data)
+        if task_serialize.is_valid():
+            task_serialize.save()
+            msg= 'Task update successfully!'
+            return Response(msg)
+        else:
+            return Response(task_serialize.errors)
+
+    if request.method == 'PATCH':
+        data = request.data
+        task_serialize = Task_Serializer(instance=task,data=data,partial=True)
+        if task_serialize.is_valid():
+            task_serialize.save()
+            msg= 'Task partial update successfully!'
+            return Response(msg)
+        else:
+            return Response(task_serialize.errors)
+        
+    if request.method == 'DELETE':
+        task.delete()
+        msg = 'Task deleted successfully!'
+        return Response(msg)
